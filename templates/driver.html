@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Driver Info {% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center">Driver Info</h1>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Position</th>
+          <th scope="col">Name</th>
+          <th scope="col">Team</th>
+          <th scope="col">Fastest Lap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{position}}</th>
+          <td>{{driver.name}}</td>
+          <td>{{driver.team}}</td>
+          <td>{{format_delta(driver.fastest_lap)}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+{% endblock %}

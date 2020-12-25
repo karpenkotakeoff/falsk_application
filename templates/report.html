@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Report {% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center">Report</h1>
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Team</th>
+          <th scope="col">Fastest Lap</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for position, driver in printer %}
+
+            {% if position > 15 %}
+                <tr class="table-secondary">
+                  <th scope="row">{{position}}</th>
+                  <td>{{driver.name}}</td>
+                  <td>{{driver.team}}</td>
+                  <td>{{format_delta(driver.fastest_lap)}}</td>
+                </tr>
+            {% else %}
+                <tr>
+                  <th scope="row">{{position}}</th>
+                  <td>{{driver.name}}</td>
+                  <td>{{driver.team}}</td>
+                  <td>{{format_delta(driver.fastest_lap)}}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+
+
+
+{% endblock %}

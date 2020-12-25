@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Drivers {% endblock %}
+
+{% block body %}
+    <h1 class=" text-center">Drivers List</h1>
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for position, driver in printer %}
+        <tr>
+            <th scope="row"><a href="{{url_for('drivers_page')}}?driver_id={{driver.abbreviation}}">{{driver.abbreviation}}</a></th>
+            <td>{{driver.name}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}
