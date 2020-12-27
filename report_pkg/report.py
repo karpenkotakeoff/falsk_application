@@ -22,8 +22,8 @@ def parse_laptimes(file_for_parsing):
     lap_times = {}
     for line in file_for_parsing.read().split("\n"):
         abbreviation = line[:3]
-        end_datetime = line[3:]
-        lap_times[abbreviation] = datetime.datetime.fromisoformat(end_datetime)
+        time = line[3:]
+        lap_times[abbreviation] = datetime.datetime.fromisoformat(time)
     return lap_times
 
 

@@ -1,17 +1,10 @@
-import os
-from dict2xml import dict2xml
-from flask import Blueprint, make_response
+from flask import Blueprint
 from flask_restful import Api, Resource, reqparse
-from report_pkg import build_report, format_delta, create_printer
+from report_pkg import format_delta, create_printer
+from utils import make_report_from_db, render_response, build_driver_response, build_response
 
 api_bp = Blueprint("api_app", __name__, url_prefix="/api/v1")
 api = Api(api_bp)
-
-path_to_data = os.path.join(os.path.dirname(__file__), "../../data")
-data_folder = os.path.normpath(path_to_data)
-
-report = build_report(data_folder)
-printer = create_printer(report)
 
 parser_report = reqparse.RequestParser()
 parser_report.add_argument("format", type=str)
@@ -22,13 +15,8 @@ parser_drivers.add_argument("order", type=str)
 parser_drivers.add_argument("driver_id", type=str)
 
 
-def render_response(response, response_format=None, status_code=200):
-    if response_format == "xml":
-        response = make_response(dict2xml({"data": response}, wrap="response"), status_code)
-        response.headers['Content-Type'] = 'application/xml'
-        return response
-    else:
-        return make_response({"data": response}, status_code)
+report = make_report_from_db()
+printer = create_printer(report)
 
 
 class Report(Resource):
@@ -43,23 +31,6 @@ class Report(Resource):
             response.append([driver.abbreviation, position, driver.name,
                              driver.team, format_delta(driver.fastest_lap)])
         return render_response(response, response_format)
-
-
-def build_response(printer, order="asc"):
-    response = []
-    for position, driver in printer:
-        response.append([driver.abbreviation, driver.name])
-    if order == "desc":
-        response = response[::-1]
-    return response
-
-
-def build_driver_response(printer, driver_id):
-    response = []
-    for position, driver in printer:
-        if driver.abbreviation == driver_id:
-            response = [position, driver.name, driver.team, format_delta(driver.fastest_lap)]
-    return response
 
 
 class Drivers(Resource):

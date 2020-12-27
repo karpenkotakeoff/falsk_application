@@ -1,7 +1,5 @@
-import pytest
 import argparse
 import report_pkg
-import datetime
 from unittest import mock
 
 

@@ -1,8 +1,8 @@
-import os
 from flasgger import Swagger
-from report_pkg import build_report, format_delta, create_printer
+from report_pkg import format_delta, create_printer
 from flask import Flask, render_template, request, redirect, url_for
 from api.routes import api_bp
+from utils import make_report_from_db
 
 app = Flask(__name__)
 app.register_blueprint(api_bp)
@@ -10,9 +10,7 @@ swagger = Swagger(app)
 
 app.jinja_env.globals.update(format_delta=format_delta)
 
-path_to_data = os.path.join(os.path.dirname(__file__), "../data")
-data_folder = os.path.normpath(path_to_data)
-report = build_report(data_folder)
+report = make_report_from_db()
 printer = create_printer(report)
 
 
