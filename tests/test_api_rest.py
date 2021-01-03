@@ -28,6 +28,12 @@ class ApiTestCase(unittest.TestCase):
                 self.assertEqual(response.status_code, status_code)
                 self.assertEqual(driver_data, expected)
 
+    def test_bad_format(self):
+        tester = app.test_client()
+        params = {"format": "yaml"}
+        response = tester.get("/api/v1/report", query_string=params, follow_redirects=True)
+        self.assertIn(b"does not support", response.data)
+
 
 def test_response_drivers_order(asc_list_drivers):
     tester = app.test_client()

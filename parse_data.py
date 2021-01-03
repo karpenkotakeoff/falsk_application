@@ -24,11 +24,14 @@ def parse_qualification_info(folder, season, grand_prix):
         lap_times_end = parse_laptimes(end_file)
     with open(os.path.join(folder, start)) as start_file:
         lap_times_start = parse_laptimes(start_file)
+    pilots_table = Pilots.select()
+    pilots = {}
+    for pilot in pilots_table:
+        pilots[pilot.abbreviation] = pilot
     for abbreviation, end_lap in lap_times_end.items():
-        pilot = Pilots.select().where(Pilots.abbreviation == abbreviation).get()
         start_lap = lap_times_start[abbreviation]
         try:
-            Qualifications.create(pilot=pilot, start_lap=start_lap, end_lap=end_lap,
+            Qualifications.create(pilot=pilots[abbreviation], start_lap=start_lap, end_lap=end_lap,
                                   season=season, grand_prix=grand_prix)
         except peewee.IntegrityError as e:
             print(f"ERROR, {abbreviation} - {e}")

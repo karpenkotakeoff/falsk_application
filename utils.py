@@ -35,9 +35,11 @@ def build_driver_response(printer, driver_id):
 
 
 def render_response(response, response_format=None, status_code=200):
-    if response_format == "xml":
+    if not response_format or response_format == "json":
+        return make_response({"data": response}, status_code)
+    elif response_format == "xml":
         response = make_response(dict2xml({"data": response}, wrap="response"), status_code)
         response.headers['Content-Type'] = 'application/xml'
         return response
     else:
-        return make_response({"data": response}, status_code)
+        return f'Sorry, format - "{response_format}" does not support'
