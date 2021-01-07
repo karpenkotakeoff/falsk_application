@@ -14,9 +14,9 @@ parser_drivers.add_argument("format", type=str)
 parser_drivers.add_argument("order", type=str)
 parser_drivers.add_argument("driver_id", type=str)
 
-
 report = make_report_from_db()
 printer = create_printer(report)
+drivers_id_set = {driver.abbreviation for driver in report}
 
 
 class Report(Resource):
@@ -43,7 +43,7 @@ class Drivers(Resource):
         order = args["order"]
         driver_id = args["driver_id"]
         if driver_id:
-            if driver_id in {driver.abbreviation for driver in report}:
+            if driver_id in drivers_id_set:
                 response = build_driver_response(printer, driver_id)
                 return render_response(response, response_format)
             else:
