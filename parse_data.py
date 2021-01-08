@@ -1,3 +1,5 @@
+# Script for parsing data from logs to database
+
 import peewee
 import os
 from models import Pilots, Qualifications

@@ -29,6 +29,7 @@ def parse_laptimes(file_for_parsing):
         lap_times[abbreviation] = datetime.datetime.fromisoformat(end_datetime)
     return lap_times
 
+
 def create_printer(report_list):
     printer = []
     for position, line in enumerate(report_list, 1):
