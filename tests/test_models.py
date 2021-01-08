@@ -4,12 +4,11 @@ import peewee
 from models import Pilots, Qualifications
 from parse_data import add_data_to_pilots_table, add_data_to_qualifications_table
 
-MODELS = [Pilots, Qualifications]
-test_db = peewee.SqliteDatabase(":memory:")
-
 
 @pytest.fixture(scope="class")
 def prepare_db():
+    MODELS = [Pilots, Qualifications]
+    test_db = peewee.SqliteDatabase(":memory:")
     test_db.bind(MODELS)
     test_db.connect()
     test_db.create_tables(MODELS)

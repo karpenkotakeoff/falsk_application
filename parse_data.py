@@ -1,7 +1,7 @@
 import peewee
 import os
 from models import Pilots, Qualifications
-from report_pkg import parse_laptimes
+from utils import parse_laptimes
 
 
 abbreviations = "abbreviations.txt"

@@ -1,7 +1,39 @@
 from dict2xml import dict2xml
 from flask import make_response
 from models import Qualifications
-from report_pkg import PilotStats, format_delta
+from dataclasses import dataclass
+import datetime
+
+
+@dataclass
+class PilotStats:
+    abbreviation: str
+    name: str
+    team: str
+    fastest_lap: datetime.timedelta
+
+
+def format_delta(lap_timedelta):
+    milliseconds = round(lap_timedelta.microseconds / 1000)
+    sec = lap_timedelta.seconds
+    minutes, seconds = divmod(sec, 60)
+    string = "{}:{}.{:03d}".format(minutes, seconds, milliseconds)
+    return string
+
+
+def parse_laptimes(file_for_parsing):
+    lap_times = {}
+    for line in file_for_parsing.read().split("\n"):
+        abbreviation = line[:3]
+        end_datetime = line[3:]
+        lap_times[abbreviation] = datetime.datetime.fromisoformat(end_datetime)
+    return lap_times
+
+def create_printer(report_list):
+    printer = []
+    for position, line in enumerate(report_list, 1):
+        printer.append((position, line,))
+    return printer
 
 
 def make_report_from_db():

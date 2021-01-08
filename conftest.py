@@ -1,5 +1,5 @@
 import pytest
-from report_pkg import PilotStats
+from utils import PilotStats
 import datetime
 from unittest import mock
 
